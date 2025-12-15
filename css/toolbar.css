@@ -1,0 +1,31 @@
+.toolbar {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
+.toolbar .name {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  padding: 0 8px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.toolbar .buttons {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
+.toolbar .buttons button {
+  float: left;
+}
+/*# sourceMappingURL=toolbar.css.map */
