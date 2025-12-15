@@ -23,7 +23,7 @@ const logToTerminal = (message, type = '') => {
   }
 };
 
-// Create a BluetoothTerminal instance with the default configuration.
+// Create a BluetoothTerminal instance with the default configuration. BluetoothTerminal
 const bluetoothTerminal = new BluetoothTerminal({
   // serviceUuid: 0xFFE0,
   // characteristicUuid: 0xFFE1,
