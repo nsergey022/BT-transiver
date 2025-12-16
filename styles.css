@@ -1,0 +1,170 @@
+/* @use 'general.scss';
+@use 'buttons.scss';
+@use 'toolbar.scss';
+@use 'terminal.scss';
+@use 'message-form.scss';
+# sourceMappingURL=styles.css.map */
+
+/* // General colors.
+$background-color: #b62424;
+$basic-color: #000000;
+$text-color: rgba($basic-color, 0.87);
+$secondary-color: rgba($basic-color, 0.54);
+$hint-color: rgba($basic-color, 0.38);
+$dividers-color: rgba($basic-color, 0.12);
+
+// Terminal colors.
+// @see https://m1.material.io/style/color.html#color-color-palette
+$terminal-default-color: #9E9E9E; // Gray 500
+$terminal-error-color: #F44336; // Red 500
+$terminal-incoming-color: #4CAF50; // Green 500
+$terminal-outgoing-color: #2196F3; // Blue 500 */
+
+
+  
+  html,body,.app {
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%;
+  }
+  
+  body {
+    background-color: #78e5da;
+    color: rgba(#000000, 0.87);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+  }
+
+  button {
+    background: rgb(6, 177, 251);
+    /* border: #e5a978; */
+    color:  rgba(#000000, 0.87);
+    cursor: pointer;
+    margin:2;
+    padding: 9px;
+    transition: background 0.3s, color 0.3s;
+    user-select: none;
+    border-radius: 4px; /* Рекомендуется добавить небольшой радиус для фона */
+    flex-shrink: 0;  /* не делай эту кнопку меньше её заданного размера».*/
+   }
+
+  /* Состояние при наведении курсора */
+button:hover {
+  background: rgba(0, 0, 0, 0.04); /* Очень легкая серая заливка */
+}
+
+ button:focus-visible {
+        outline: 2px solid rgba(12, 66, 227, 0.2);
+      }
+
+/* Состояние при нажатии */
+button:active {
+  background: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.54);
+}
+  
+    button i.material-icons {
+      vertical-align: middle;
+    }
+   
+ 
+
+  .toolbar {
+       display: flex;
+       align-items: center;
+       flex-shrink: 0;
+        /* Делаем панель липкой */
+      position: sticky;
+      top: 0;          /* Прилипать к самому верху */
+      z-index: 1000;   /* Чтобы панель была поверх остального контента */
+  
+  /* Добавим фон и тень, чтобы она выделялась при прокрутке */
+  background-color: #c7cbd1;
+  box-shadow: 0 14px 5px 6px rgba(0,0,0,0.1);
+      }
+      
+  .toolbar .name {
+     flex-grow: 1;
+     padding: 0 8px;
+     user-select: none;
+     }
+      
+  .toolbar .buttons {
+   /* flex-shrink: 0; */
+   display: flex; /*Современная замена float: left*/
+   }
+
+
+/* // General colors.
+$background-color: #b62424;
+$basic-color: #000000;
+$text-color: rgba($basic-color, 0.87);
+$secondary-color: rgba($basic-color, 0.54);
+$hint-color: rgba($basic-color, 0.38);
+$dividers-color: rgba($basic-color, 0.12);
+
+// Terminal colors.
+// @see https://m1.material.io/style/color.html#color-color-palette
+$terminal-default-color: #9E9E9E; // Gray 500
+$terminal-error-color: #F44336; // Red 500
+$terminal-incoming-color: #4CAF50; // Green 500
+$terminal-outgoing-color: #2196F3; // Blue 500 */
+
+  .terminal {
+          border: 1px solid rgba(#000000, 0.12);
+          border-width: 1px 0;
+          flex-grow: 1;
+          overflow: auto;
+          padding: 4px 0;
+       }
+  div {
+      color:  black;
+      line-height: 1;
+      padding: 4px 8px;
+      word-break: break-word;
+     }  
+ 
+     .error {
+            color:  #F44336;
+          }
+      
+     .incoming {
+            color: #4CAF50;
+          }
+      
+     .outgoing {
+          color: #2196F3;
+          }
+
+/* строка ввода */
+ .message-form {
+       display: flex;
+       flex-shrink: 0;
+    }       
+  input {
+         background: burlywood;
+         /* border: none; */
+         /* color: rgba(#000000, 0.87); */
+         flex-grow: 1;
+         font: normal 16px/1.5 'Roboto Mono', monospace;
+         padding: 0 8px;
+         }
+ 
+         ::placeholder {
+                color: rgba(#000000, 0.54);
+              }
+           
+/*           
+     button {
+            flex-shrink: 0;
+            }
+          */
+          
+       
+     
