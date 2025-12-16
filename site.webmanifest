@@ -4,7 +4,7 @@
   "short_name": "Terminal",
   "theme_color": "#2196f3",
   "background_color": "#ffffff",
-  "start_url": "./",
+  "start_url": "index.html",
   "description": "Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices",
   "orientation": "any",
   "icons": [
