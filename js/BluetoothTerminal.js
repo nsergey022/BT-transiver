@@ -15,6 +15,18 @@
      * @param [onConnectCallback]     Optional callback for successful connection
      * @param [onDisconnectCallback]  Optional callback for disconnection
      */
+
+/**
+* Создает экземпляр BluetoothTerminal с предоставленной конфигурацией.
+* Поддерживает как объект параметров (предпочтительный), так и отдельные параметры (устарело и будет удалено в версии 2.0.0).
+* @param [optionsOrServiceUuid] Необязательный объект параметров или UUID службы в виде целого числа (16-бит или 32-бит) или
+* строки (128-битный UUID)
+* @param [characteristicUuid] Необязательный UUID характеристики в виде целого числа (16-бит или 32-бит) или строки (128-битный UUID)
+* @param [receiveSeparator] Необязательный разделитель приема длиной в один символ
+* @param [sendSeparator] Необязательный разделитель отправки длиной в один символ
+* @param [onConnectCallback] Необязательная функция обратного вызова при успешном подключении
+* @param [onDisconnectCallback] Необязательная функция обратного вызова при отключении
+*/
     constructor(optionsOrServiceUuid, characteristicUuid,
     // @deprecated
     receiveSeparator,
@@ -56,58 +68,58 @@
       this._boundGattServerDisconnectedListener = this._gattServerDisconnectedListener.bind(this);
       this._logDebug('constructor', 'BluetoothTerminal instance initialized');
       if (typeof optionsOrServiceUuid === 'object') {
-        const options = optionsOrServiceUuid;
-        if (options.serviceUuid !== undefined) {
-          this.setServiceUuid(options.serviceUuid);
-        }
-        if (options.characteristicUuid !== undefined) {
-          this.setCharacteristicUuid(options.characteristicUuid);
-        }
-        if (options.characteristicValueSize !== undefined) {
-          this.setCharacteristicValueSize(options.characteristicValueSize);
-        }
-        if (options.receiveSeparator !== undefined) {
-          this.setReceiveSeparator(options.receiveSeparator);
-        }
-        if (options.sendSeparator !== undefined) {
-          this.setSendSeparator(options.sendSeparator);
-        }
-        if (options.onConnectCallback !== undefined) {
-          this.onConnect(options.onConnectCallback);
-        }
-        if (options.onDisconnectCallback !== undefined) {
-          this.onDisconnect(options.onDisconnectCallback);
-        }
-        if (options.onReceiveCallback !== undefined) {
-          this.onReceive(options.onReceiveCallback);
-        }
-        if (options.onLogCallback !== undefined) {
-          this.onLog(options.onLogCallback);
-        }
-        if (options.logLevel !== undefined) {
-          this.setLogLevel(options.logLevel);
-        }
+            const options = optionsOrServiceUuid;
+            if (options.serviceUuid !== undefined) {
+                this.setServiceUuid(options.serviceUuid);
+                }
+            if (options.characteristicUuid !== undefined) {
+               this.setCharacteristicUuid(options.characteristicUuid);
+               }
+            if (options.characteristicValueSize !== undefined) {
+               this.setCharacteristicValueSize(options.characteristicValueSize);
+               }
+            if (options.receiveSeparator !== undefined) {
+              this.setReceiveSeparator(options.receiveSeparator);
+              }
+            if (options.sendSeparator !== undefined) {
+              this.setSendSeparator(options.sendSeparator);
+              }
+            if (options.onConnectCallback !== undefined) {
+              this.onConnect(options.onConnectCallback);
+              }
+            if (options.onDisconnectCallback !== undefined) {
+              this.onDisconnect(options.onDisconnectCallback);
+              }
+            if (options.onReceiveCallback !== undefined) {
+              this.onReceive(options.onReceiveCallback);
+              }
+            if (options.onLogCallback !== undefined) {
+              this.onLog(options.onLogCallback);
+              }
+            if (options.logLevel !== undefined) {
+              this.setLogLevel(options.logLevel);
+              }
       } else {
-        // @deprecated
-        if (optionsOrServiceUuid !== undefined) {
-          this.setServiceUuid(optionsOrServiceUuid);
-        }
-        if (characteristicUuid !== undefined) {
-          this.setCharacteristicUuid(characteristicUuid);
-        }
-        if (receiveSeparator !== undefined) {
-          this.setReceiveSeparator(receiveSeparator);
-        }
-        if (sendSeparator !== undefined) {
-          this.setSendSeparator(sendSeparator);
-        }
-        if (onConnectCallback !== undefined) {
-          this.onConnect(onConnectCallback);
-        }
-        if (onDisconnectCallback !== undefined) {
-          this.onDisconnect(onDisconnectCallback);
-        }
-      }
+               // @deprecated
+              if (optionsOrServiceUuid !== undefined) {
+                this.setServiceUuid(optionsOrServiceUuid);
+                }
+              if (characteristicUuid !== undefined) {
+                this.setCharacteristicUuid(characteristicUuid);
+                }
+              if (receiveSeparator !== undefined) {
+                this.setReceiveSeparator(receiveSeparator);
+                }
+              if (sendSeparator !== undefined) {
+                this.setSendSeparator(sendSeparator);
+                }
+              if (onConnectCallback !== undefined) {
+                this.onConnect(onConnectCallback);
+                }
+              if (onDisconnectCallback !== undefined) {
+                this.onDisconnect(onDisconnectCallback);
+                }
+              }
     }
   
     /**
@@ -120,14 +132,14 @@
      */
     setServiceUuid(uuid) {
       if (!Number.isInteger(uuid) && typeof uuid !== 'string') {
-        throw new Error('Service UUID must be either an integer or a string');
-      }
+           throw new Error('Service UUID must be either an integer or a string');
+          }
       if (uuid === 0) {
-        throw new Error('Service UUID cannot be zero');
-      }
+          throw new Error('Service UUID cannot be zero');
+          }
       if (typeof uuid === 'string' && uuid.trim() === '') {
-        throw new Error('Service UUID cannot be an empty string');
-      }
+          throw new Error('Service UUID cannot be an empty string');
+          }
       this._serviceUuid = uuid;
       this._logDebug('setServiceUuid', `Service UUID set to "${uuid}"`);
     }
@@ -165,7 +177,7 @@
     setCharacteristicValueSize(size) {
       if (!Number.isInteger(size) || size <= 0) {
         throw new Error('Characteristic value size must be a positive integer');
-      }
+        }
       this._characteristicValueSize = size;
       this._logDebug('setCharacteristicValueSize', `Characteristic value size set to "${size}"`);
     }
@@ -181,7 +193,7 @@
     setReceiveSeparator(separator) {
       if (typeof separator !== 'string') {
         throw new Error('Receive separator must be a string');
-      }
+        }
       if (separator.length !== 1) {
         throw new Error('Receive separator length must be equal to one character');
       }
@@ -193,15 +205,16 @@
      * Sets character representing separator for messages sent to the connected device, end of line for example.
      * @param separator Send separator with length equal to one character
      * 
-     * Задает символ, представляющий собой разделитель для сообщений, отправляемых на подключенное устройство, например, конец строки.
+     * Задает символ, представляющий собой разделитель для сообщений, отправляемых на подключенное устройство,
+     *  например, конец строки.
      * @param separator Указывает разделитель длиной в один символ
      */
     setSendSeparator(separator) {
       if (typeof separator !== 'string') {
-        throw new Error('Send separator must be a string');
+        throw new Error('Send separator must be a string');  //немедленый вывод ошибки если не строка
       }
       if (separator.length !== 1) {
-        throw new Error('Send separator length must be equal to one character');
+        throw new Error('Send separator length must be equal to one character'); //немедленый вывод ошибки если больше 1-го символа
       }
       this._sendSeparator = separator;
       this._logDebug('setSendSeparator', `Send separator set to "${separator}"`);
@@ -212,6 +225,12 @@
      * @deprecated Use `onConnect()` instead.
      * @param [callback] Callback for successful connection; omit or pass null/undefined to remove
      */
+     
+    /**
+      * Устанавливает функцию обратного вызова, которая будет вызвана после полного подключения устройства и начала обмена данными.
+      * @deprecated Используйте `onConnect()` вместо этого.
+      * @param [callback] Функция обратного вызова для успешного подключения; опустите или передайте null/undefined, чтобы удалить.
+      */
     setOnConnected(callback) {
       this.onConnect(callback);
     }
@@ -360,11 +379,13 @@
       this._logInfo('disconnect', `Initiating disconnection from device "${this.getDeviceName()}"...`);
       if (this._characteristic) {
         // Stop receiving and processing incoming messages from the device.
+        // Прекратить прием и обработку входящих сообщений с устройства.
         this._characteristic.removeEventListener('characteristicvaluechanged', this._boundCharacteristicValueChangedListener);
         this._characteristic = null;
       }
   
       // Remove reconnection handler to prevent automatic reconnection attempts.
+      // Удалите обработчик повторного подключения, чтобы предотвратить автоматические попытки повторного подключения.
       this._device.removeEventListener('gattserverdisconnected', this._boundGattServerDisconnectedListener);
       if (!this._device.gatt) {
         throw new Error('GATT server is not available');
@@ -666,6 +687,7 @@
         }
       })();
     }
+    
     _logGeneric(logLevel, method, message, error) {
       if (this._onLogCallback) {
         this._onLogCallback(logLevel, method, message, error);
