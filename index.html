@@ -18,6 +18,7 @@
   <link rel="shortcut icon" href="icons/favicon.ico" />
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" />
+  <!-- Чтобы эта иконка появилась на экране,HTML-документа должна быть подключена библиотека: -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <!-- <link rel="stylesheet" href="css/normalize.css" /> -->
   <link rel="stylesheet" href="styles.css" />
@@ -26,28 +27,31 @@
 
 <body>
 
-  <div class="app">
-    <div class="toolbar">
-      <div id="device-name" class="name">Web Bluetooth Terminal JDY-09</div>
+ <div class="app">
+  <div class="toolbar">
+    <div id="device-name" class="name">Web Bluetooth Terminal JDY-09</div>
       <div class="buttons">
-        <button id="connect" type="button" aria-label="Connect">
-          <i class="material-icons">bluetooth_connected</i>
-        </button>
-        <button id="disconnect" type="button" aria-label="Disconnect">
-          <i class="material-icons">bluetooth_disabled</i>
-        </button>
+        <button id="connect" type="button" aria-label="Connect"><i class="material-icons">bluetooth_connected</i></button>
+        <button id="disconnect" type="button" aria-label="Disconnect"><i class="material-icons">bluetooth_disabled</i></button>
       </div>
-    </div>
-    <div id="terminal" class="terminal"></div>
+   </div>
+  <!-- пользовательские кнопки -->
+  <div> <button id="userkey1" type="button"></button></div>
+  <div> <button id="userkey2" type="button"></button></div>
+  <div> <button id="userkey3" type="button"></button></div>
+  
+       <div id="terminal" class="terminal">
+        <!-- здесь будут все собщения -->
+       </div>
+       
+    <!-- форма для отправки сообщений -->
     <form id="message-form" class="message-form">
-      <input id="message-input" type="text" aria-label="Input" autocomplete="off"
-        placeholder="Type something to send...">
-      <button type="submit" aria-label="Send">
-        <i class="material-icons">send</i>
-      </button>
+        <input id="message-input" type="text" aria-label="Input" autocomplete="off" placeholder="Type something to send...">
+        <button type="submit" aria-label="Send"><i class="material-icons">send</i></button>
     </form>
   </div>
 
+<!-- подключение скриптов -->
   <script src="js/BluetoothTerminal.js"></script>
   <script src="js/main.js"></script>
   <script src="js/register-sw.js"></script>

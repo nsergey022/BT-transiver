@@ -1,5 +1,6 @@
 /**
  * BluetoothTerminal class.
+ * Класс BluetoothTerminal.
  */
  class BluetoothTerminal {
     /**
@@ -25,9 +26,11 @@
     onDisconnectCallback // @deprecated
     ) {
       // Event listeners bound to this instance to maintain the correct context.
+      // Обработчики событий, привязанные к этому экземпляру, поддерживают правильный контекст.
       this._boundCharacteristicValueChangedListener = void 0;
       this._boundGattServerDisconnectedListener = void 0;
       // Private properties configurable via setters.
+      // Приватные свойства, настраиваемые с помощью сеттеров.
       this._serviceUuid = 0xFFE0;
       this._characteristicUuid = 0xFFE1;
       this._characteristicValueSize = 20;
@@ -39,12 +42,16 @@
       this._onLogCallback = null;
       this._logLevel = 'log';
       // Current Bluetooth device object.
+      // Текущий объект Bluetooth-устройства.
       this._device = null;
       // Current Bluetooth characteristic object.
+      // Текущий объект характеристики Bluetooth.
       this._characteristic = null;
       // Buffer that accumulates incoming characteristic value until a separator character is received.
+      // Буфер, в котором накапливаются входящие значения характеристик до тех пор, пока не будет получен разделительный символ.
       this._receiveBuffer = '';
       // Bind event listeners to preserve 'this' context when called by the event system.
+      // Привязываем обработчики событий, чтобы сохранить контекст 'this' при вызове системой событий.
       this._boundCharacteristicValueChangedListener = this._characteristicValueChangedListener.bind(this);
       this._boundGattServerDisconnectedListener = this._gattServerDisconnectedListener.bind(this);
       this._logDebug('constructor', 'BluetoothTerminal instance initialized');
@@ -107,6 +114,9 @@
      * Sets integer or string representing service UUID used.
      * @param uuid Service UUID as an integer (16-bit or 32-bit) or a string (128-bit UUID)
      * @see https://developer.mozilla.org/en-US/docs/Web/API/BluetoothUUID
+     * 
+     * Задает целое число или строку, представляющую используемый UUID службы.
+     * @param uuid UUID сервиса в виде целого числа (16-битное или 32-битное) или строки (128-битный UUID)
      */
     setServiceUuid(uuid) {
       if (!Number.isInteger(uuid) && typeof uuid !== 'string') {
@@ -126,6 +136,7 @@
      * Sets integer or string representing characteristic UUID used.
      * @param uuid Characteristic UUID as an integer (16-bit or 32-bit) or a string (128-bit UUID)
      * @see https://developer.mozilla.org/en-US/docs/Web/API/BluetoothUUID
+     * Задает целое число или строку, представляющую используемый UUID характеристики.
      */
     setCharacteristicUuid(uuid) {
       if (!Number.isInteger(uuid) && typeof uuid !== 'string') {
@@ -145,6 +156,11 @@
      * Sets the maximum size (in bytes) for each characteristic write operation. Larger messages will be automatically
      * split into chunks of this size.
      * @param size Maximum characteristic value size in bytes (positive integer)
+     *
+     * Задает максимальный размер (в байтах) для каждой операции записи характеристики. 
+     * Более крупные сообщения будут автоматически
+     * разбиты на фрагменты этого размера.
+     * @param size Максимальный размер значения характеристики в байтах (положительное целое число)
      */
     setCharacteristicValueSize(size) {
       if (!Number.isInteger(size) || size <= 0) {
@@ -157,6 +173,10 @@
     /**
      * Sets character representing separator for messages received from the connected device, end of line for example.
      * @param separator Receive separator with length equal to one character
+     *
+     * Устанавливает символ, представляющий разделитель для сообщений, получаемых от подключенного устройства, например,
+     *  конец строки.
+     * @param separator Разделитель для получаемых сообщений длиной в один символ
      */
     setReceiveSeparator(separator) {
       if (typeof separator !== 'string') {
@@ -172,6 +192,9 @@
     /**
      * Sets character representing separator for messages sent to the connected device, end of line for example.
      * @param separator Send separator with length equal to one character
+     * 
+     * Задает символ, представляющий собой разделитель для сообщений, отправляемых на подключенное устройство, например, конец строки.
+     * @param separator Указывает разделитель длиной в один символ
      */
     setSendSeparator(separator) {
       if (typeof separator !== 'string') {
@@ -196,6 +219,10 @@
     /**
      * Sets a callback that will be called after the device is fully connected and communication has started.
      * @param [callback] Callback for successful connection; omit or pass null/undefined to remove
+     * 
+     * Устанавливает функцию обратного вызова, которая будет вызвана после полного подключения устройства и 
+     * начала обмена данными.
+     * @param [callback] Функция обратного вызова для успешного подключения; опустите или передайте null/undefined, чтобы удалить
      */
     onConnect(callback) {
       this._onConnectCallback = callback || null;
@@ -206,6 +233,10 @@
      * Sets a callback that will be called after the device is disconnected.
      * @deprecated Use `onDisconnect()` instead.
      * @param [callback] Callback for disconnection; omit or pass null/undefined to remove
+     * 
+     * Устанавливает функцию обратного вызова, которая будет вызвана после отключения устройства. 
+     * @deprecated Используйте `onDisconnect()` вместо этого.
+     * @param [callback] Функция обратного вызова для отключения; опустите или передайте null/undefined, чтобы удалить
      */
     setOnDisconnected(callback) {
       this.onDisconnect(callback);
@@ -215,6 +246,10 @@
      * Sets a callback that will be called after the device is disconnected.
      * @param [callback] Callback for disconnection; omit or pass null/undefined to remove
      */
+    /**
+    * Устанавливает функцию обратного вызова, которая будет вызвана после отключения устройства.
+    * @param [callback] Функция обратного вызова для отключения; опустите или передайте null/undefined, чтобы удалить.
+    */
     onDisconnect(callback) {
       this._onDisconnectCallback = callback || null;
       this._logDebug('onDisconnect', `onDisconnect callback ${this._onDisconnectCallback === null ? 'removed' : 'set'}`);
@@ -224,6 +259,10 @@
      * Sets a callback that will be called when an incoming message from the connected device is received.
      * @param [callback] Callback for incoming message; omit or pass null/undefined to remove
      */
+    /**
+      * Устанавливает функцию обратного вызова, которая будет вызываться при получении входящего сообщения от подключенного устройства.
+      * @param [callback] Функция обратного вызова для входящего сообщения; опустите или передайте null/undefined, чтобы удалить.
+      */
     onReceive(callback) {
       this._onReceiveCallback = callback || null;
       this._logDebug('onReceive', `onReceive callback ${this._onReceiveCallback === null ? 'removed' : 'set'}`);
@@ -234,6 +273,10 @@
      * level set.
      * @param [callback] Callback for log messages; omit or pass null/undefined to remove
      */
+    /**
+      * Устанавливает функцию обратного вызова, которая будет вызываться каждый раз, когда класс генерирует какое-либо сообщение в журнале, независимо от установленного уровня логирования.
+      * @param [callback] Функция обратного вызова для сообщений журнала; опустите или передайте null/undefined, чтобы удалить
+    */
     onLog(callback) {
       this._onLogCallback = callback || null;
       this._logDebug('onLog', `onLog callback ${this._onLogCallback === null ? 'removed' : 'set'}`);
@@ -244,6 +287,11 @@
      * most verbose) is: "none", "error", "warn", "info", "log", "debug". Each level includes all less verbose levels.
      * @param logLevel Log level as a string ("none", "error", "warn", "info", "log", or "debug")
      */
+    /**
+      * Устанавливает уровень логирования, определяющий, какие сообщения отображаются в консоли. Иерархия уровней (от наименее подробного до
+      * наиболее подробного) следующая: "none", "error", "warn", "info", "log", "debug". Каждый уровень включает все менее подробные уровни.
+      * @param logLevel Уровень логирования в виде строки ("none", "error", "warn", "info", "log" или "debug")
+      */
     setLogLevel(logLevel) {
       if (typeof logLevel !== 'string') {
         throw new Error('Log level must be a string');
@@ -263,6 +311,14 @@
      * @returns Promise that resolves when the device is fully connected and communication has started, or rejects if an
      *   error occurs.
      */
+    /**
+      * Открывает окно выбора Bluetooth-устройства в браузере, чтобы выбрать устройство, если оно ранее не было выбрано, устанавливает
+      * соединение с выбранным устройством и инициирует связь.
+      * Если настроено, функция обратного вызова `onConnect()` будет выполнена после установления соединения.
+      * @async
+      * @returns Promise, который разрешается, когда устройство полностью подключено и связь началась, или отклоняется, если
+      * возникает ошибка.
+      */
     async connect() {
       this._logInfo('connect', 'Initiating connection process...');
       if (!this._device) {
@@ -292,6 +348,10 @@
      * Disconnects from the currently connected device and cleans up associated resources.
      * If configured, the `onDisconnect()` callback function will be executed after the complete disconnection.
      */
+    /**
+      * Отключается от подключенного устройства и очищает связанные ресурсы.
+      * Если настроено, функция обратного вызова `onDisconnect()` будет выполнена после полного отключения.
+      */
     disconnect() {
       if (!this._device) {
         this._logWarn('disconnect', 'No device is currently connected');
@@ -335,8 +395,16 @@
      * @deprecated Use `onReceive()` instead.
      * @param message String message received from the connected device, with separators removed
      */
+    /**
+      * Обработчик входящих сообщений, полученных от подключенного устройства. Переопределите этот метод для обработки сообщений,
+      * полученных от подключенного устройства. Каждый раз, когда обрабатывается полное сообщение (заканчивающееся разделителем "Получено"),
+      * этот метод будет вызываться со строкой сообщения.
+      * @deprecated Используйте `onReceive()` вместо этого.
+      * @param message Строка сообщения, полученного от подключенного устройства, без разделителей
+      */
     receive(message) {// eslint-disable-line @typescript-eslint/no-unused-vars
       // The placeholder method is intended to be overridden by users to handle incoming messages.
+      // Метод-заполнитель предназначен для переопределения пользователями для обработки входящих сообщений.
     }
   
     /**
@@ -347,25 +415,38 @@
      * @returns Promise that resolves when message successfully sent, or rejects if the device is disconnected or an
      *   error occurs.
      */
+    /**
+      * Отправляет сообщение на подключенное устройство, автоматически добавляя настроенный разделитель отправки и разбивая
+      * сообщение на соответствующие фрагменты, если оно превышает максимальный размер значения характеристики.
+      * @async
+      * @param message Строка сообщения для отправки на подключенное устройство
+      * @returns Promise, который разрешается при успешной отправке сообщения или отклоняется, если устройство отключено или произошла
+      * ошибка.
+      */
     async send(message) {
       // Ensure message is a string, defaulting to empty string if undefined/null.
+      // Убедитесь, что сообщение является строкой; по умолчанию используется пустая строка, если значение не определено/равно null.
       message = String(message || '');
   
       // Validate that the message is not empty after conversion.
+      // Проверяем, не пусто ли сообщение после преобразования.
       if (!message) {
         throw new Error('Message must be a non-empty string');
       }
   
       // Verify the communication channel before attempting to send.
+      // Перед попыткой отправки проверьте канал связи.
       if (!this._device || !this._characteristic) {
         throw new Error('Device must be connected to send a message');
       }
       this._logDebug('send', `Sending message: "${message}"...`);
   
       // Append the configured send separator to the message.
+      // Добавить заданный разделитель отправки к сообщению.
       message += this._sendSeparator;
   
       // Split the message into chunks according to the characteristic value size limit.
+      // Разделить сообщение на фрагменты в соответствии с ограничением размера значения характеристики.
       const chunks = [];
       for (let i = 0; i < message.length; i += this._characteristicValueSize) {
         chunks.push(message.slice(i, i + this._characteristicValueSize));
@@ -373,6 +454,7 @@
       this._logDebug('send', `Sending in ${chunks.length} chunk${chunks.length > 1 ? 's' : ''}: "${chunks.join('", "')}"...`);
       try {
         // Send chunks sequentially.
+        // Отправка фрагментов осуществляется последовательно.
         for (let i = 0; i < chunks.length; i++) {
           this._logDebug('send', `Sending chunk ${i + 1}/${chunks.length}: "${chunks[i]}"...`);
           await this._characteristic.writeValue(new TextEncoder().encode(chunks[i]));
@@ -388,6 +470,10 @@
      * Retrieves the name of the currently connected device.
      * @returns Device name or an empty string if no device is connected or has no name.
      */
+    /**
+      * Получает имя подключенного в данный момент устройства.
+      * @returns Имя устройства или пустую строку, если устройство не подключено или не имеет имени.
+      */
     getDeviceName() {
       return this._device && this._device.name ? this._device.name : '';
     }
@@ -400,6 +486,14 @@
      * @returns Promise that resolves when the device is fully connected and communication has started, or rejects if an
      *   error occurs.
      */
+    /**
+      * Устанавливает соединение с текущим устройством, начинает обмен данными, настраивает обработчик событий для обработки
+      * входящих сообщений и вызывает функцию обратного вызова `onConnect()`, если она настроена. Этот метод вызывается
+      * внутренне методом `connect()` и обработчиком повторного подключения.
+      * @async
+      * @returns Promise, который разрешается, когда устройство полностью подключено и обмен данными начался, или отклоняется, если
+      * возникает ошибка.
+      */
     async _connectDevice() {
       if (!this._device) {
         throw new Error('Device must be selected to connect');
@@ -413,6 +507,7 @@
       }
   
       // Set up an event listener to receive and process incoming messages from the device.
+      // Настройте обработчик событий для приема и обработки входящих сообщений с устройства.
       this._characteristic.addEventListener('characteristicvaluechanged', this._boundCharacteristicValueChangedListener);
       if (this._onConnectCallback) {
         this._logDebug('_connectDevice', `Executing onConnect callback...`);
@@ -429,6 +524,13 @@
      * @param serviceUuid Service UUID
      * @returns Promise that resolves with the selected Bluetooth device object.
      */
+    /**
+      * Открывает средство выбора Bluetooth-устройств в браузере и позволяет пользователю выбрать устройство, поддерживающее указанный
+      * UUID службы. Этот метод не имеет состояния и не изменяет никаких свойств экземпляра.
+      * @async
+      * @param serviceUuid UUID службы
+      * @returns Promise, который разрешается с выбранным объектом Bluetooth-устройства.
+      */
     async _requestDevice(serviceUuid) {
       this._logDebug('_requestDevice', `Opening browser Bluetooth device picker for service UUID "${serviceUuid}"...`);
       let device;
@@ -456,6 +558,16 @@
      * @param characteristicUuid Characteristic UUID
      * @returns Promise that resolves with the Bluetooth characteristic object with notifications enabled.
      */
+    /**
+      * Устанавливает соединение с предоставленным GATT-сервером устройства, получает указанную службу, обращается к
+      * указанной характеристике и запускает уведомления для этой характеристики. Этот метод не имеет состояния и не
+      * изменяет какие-либо свойства экземпляра.
+      * @async
+      * @param device Объект Bluetooth-устройства
+      * @param serviceUuid UUID службы
+      * @param characteristicUuid UUID характеристики
+      * @returns Promise, который разрешается с объектом характеристики Bluetooth с включенными уведомлениями.
+      */
     async _startNotifications(device, serviceUuid, characteristicUuid) {
       if (!device.gatt) {
         throw new Error('GATT server is not available');
@@ -481,8 +593,15 @@
      * appropriate callback.
      * @param event Event
      */
+    /**
+    * Обрабатывает событие `characteristicvaluechanged` от характеристики Bluetooth. Декодирует входящее значение,
+    * накапливает символы до тех пор, пока не встретит разделитель приема, затем обрабатывает все сообщение и вызывает
+    * соответствующую функцию обратного вызова.
+    * @param event Событие
+    */
     _characteristicValueChangedListener(event) {
       // `event.target` will be `BluetoothRemoteGATTCharacteristic` when event triggered with this listener.
+      // При срабатывании события с помощью этого слушателя `event.target` будет иметь значение `BluetoothRemoteGATTCharacteristic`.
       const value = new TextDecoder().decode(event.target.value);
       this._logDebug('_characteristicValueChangedListener', `Value received: "${value}"`);
       for (const c of value) {
@@ -511,8 +630,15 @@
      * attempts to reconnect to the device automatically.
      * @param event Event
      */
+    /**
+      * Обрабатывает событие 'gattserverdisconnected' от устройства Bluetooth. Это событие срабатывает при потере соединения
+      * с сервером GATT. Метод вызывает функцию обратного вызова `onDisconnect()`, если она настроена, и
+      * пытается автоматически переподключиться к устройству.
+      * @param event Событие
+      */
     _gattServerDisconnectedListener(event) {
       // `event.target` will be `BluetoothDevice` when event triggered with this listener.
+      // При срабатывании события с помощью этого слушателя `event.target` будет иметь значение `BluetoothDevice`.
       const device = event.target;
       this._log('_gattServerDisconnectedListener', `Device "${device.name}" was disconnected...`);
       if (this._onDisconnectCallback) {
@@ -523,11 +649,14 @@
   
       // `this._device` is not reassigned to `device` (`event.target`) here because `this._device` _should_ already be
       // set during the previous connection process and _should_ remain valid for reconnection.
-  
+      // Здесь `this._device` не переназначается `device` (`event.target`), потому что `this._device` _должен_ быть уже установлен 
+      //во время предыдущего процесса подключения и _должен_ оставаться действительным для повторного подключения.
       this._log('_gattServerDisconnectedListener', `Attempting to reconnect to device "${this.getDeviceName()}"...`);
   
       // Using IIFE to leverage async/await while maintaining the void return type required by the event handler
       // interface. Try/catch is required here to avoid propagating the error as there is no place to catch it.
+      // Использование IIFE для применения async/await при сохранении типа возвращаемого значения void, необходимого для обработчика событий.
+      // Интерфейс. Здесь необходим try/catch, чтобы избежать распространения ошибки, поскольку нет места для ее перехвата.
       (async () => {
         try {
           await this._connectDevice();
@@ -586,6 +715,8 @@
   
   // Conditionally export the class as CommonJS module for browser vs Node.js compatibility.
   // From least to most verbose, index matters!
+  // Условно экспортируем класс как модуль CommonJS для обеспечения совместимости с браузерами и Node.js.
+  // Индекс имеет значение, от наименее до наиболее подробного!
   BluetoothTerminal._logLevels = ['none', 'error', 'warn', 'info', 'log', 'debug'];
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = BluetoothTerminal;
