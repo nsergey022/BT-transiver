@@ -49,9 +49,8 @@ terminal.onReceive((message) => {
 terminal.onLog((logLevel, method, message) => {
   // Ignore debug messages.
   if (logLevel === 'debug') {
-    return;
-  }
-
+      return;
+      }
   logToTerminal(message);
 });
 

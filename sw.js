@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.3.0/workbox-sw.js');
 
-const VERSION = '2.5.1';    //версию менять при каждом изменении было '1.4.0'
+const VERSION = '2.5.2';    //версию менять при каждом изменении было '1.4.0'
 const FILES = [
   'icons/apple-touch-icon.png',
   'icons/favicon-96x96.png',
