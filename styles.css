@@ -43,10 +43,10 @@ $terminal-outgoing-color: #2196F3; // Blue 500 */
 
   button {
     background: rgb(6, 177, 251);
-    border: #e5a978;
-    color:  rgba(#000000, 0.87);
+    /* border: #e5a978; */
+    /* color:  #4CAF50; */
     cursor: pointer;
-    margin:2;
+    margin:2px;
     padding: 9px;
     transition: background 0.3s, color 0.3s;
     user-select: none;

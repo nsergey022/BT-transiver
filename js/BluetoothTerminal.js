@@ -131,16 +131,20 @@
      * @param uuid UUID сервиса в виде целого числа (16-битное или 32-битное) или строки (128-битный UUID)
      */
     setServiceUuid(uuid) {
+       //если не число и не строка
       if (!Number.isInteger(uuid) && typeof uuid !== 'string') {
            throw new Error('Service UUID must be either an integer or a string');
           }
+          //если равно 0
       if (uuid === 0) {
           throw new Error('Service UUID cannot be zero');
           }
+          //если строка но она пустая
       if (typeof uuid === 'string' && uuid.trim() === '') {
           throw new Error('Service UUID cannot be an empty string');
           }
-      this._serviceUuid = uuid;
+        
+      this._serviceUuid = uuid; //присваиваем значение сервиса UUID
       this._logDebug('setServiceUuid', `Service UUID set to "${uuid}"`);
     }
   
@@ -151,16 +155,20 @@
      * Задает целое число или строку, представляющую используемый UUID характеристики.
      */
     setCharacteristicUuid(uuid) {
+        //если не число и не строка
       if (!Number.isInteger(uuid) && typeof uuid !== 'string') {
         throw new Error('Characteristic UUID must be either an integer or a string');
-      }
+        }
+        //если равно 0
       if (uuid === 0) {
         throw new Error('Characteristic UUID cannot be zero');
-      }
+        }
+      //если строка но она пустая
       if (typeof uuid === 'string' && uuid.trim() === '') {
         throw new Error('Characteristic UUID cannot be an empty string');
-      }
-      this._characteristicUuid = uuid;
+        }
+
+      this._characteristicUuid = uuid; //присваиваем значение характеристики UUID
       this._logDebug('setCharacteristicUuid', `Characteristic UUID set to "${uuid}"`);
     }
   
@@ -191,9 +199,11 @@
      * @param separator Разделитель для получаемых сообщений длиной в один символ
      */
     setReceiveSeparator(separator) {
+      //проверка  если это не строка
       if (typeof separator !== 'string') {
         throw new Error('Receive separator must be a string');
         }
+        // проверка если больше чем один символ
       if (separator.length !== 1) {
         throw new Error('Receive separator length must be equal to one character');
       }
@@ -235,11 +245,14 @@
       this.onConnect(callback);
     }
   
-    /**
+    /** 
      * Sets a callback that will be called after the device is fully connected and communication has started.
      * @param [callback] Callback for successful connection; omit or pass null/undefined to remove
      * 
-     * Устанавливает функцию обратного вызова, которая будет вызвана после полного подключения устройства и 
+    */
+     
+    /**
+     * функция обратного вызова, которая будет вызвана после полного подключения устройства и 
      * начала обмена данными.
      * @param [callback] Функция обратного вызова для успешного подключения; опустите или передайте null/undefined, чтобы удалить
      */
@@ -252,8 +265,10 @@
      * Sets a callback that will be called after the device is disconnected.
      * @deprecated Use `onDisconnect()` instead.
      * @param [callback] Callback for disconnection; omit or pass null/undefined to remove
-     * 
-     * Устанавливает функцию обратного вызова, которая будет вызвана после отключения устройства. 
+     */
+    
+    /**
+     * функция обратного вызова, которая будет вызвана после отключения устройства. 
      * @deprecated Используйте `onDisconnect()` вместо этого.
      * @param [callback] Функция обратного вызова для отключения; опустите или передайте null/undefined, чтобы удалить
      */
@@ -265,6 +280,7 @@
      * Sets a callback that will be called after the device is disconnected.
      * @param [callback] Callback for disconnection; omit or pass null/undefined to remove
      */
+
     /**
     * Устанавливает функцию обратного вызова, которая будет вызвана после отключения устройства.
     * @param [callback] Функция обратного вызова для отключения; опустите или передайте null/undefined, чтобы удалить.
@@ -279,7 +295,7 @@
      * @param [callback] Callback for incoming message; omit or pass null/undefined to remove
      */
     /**
-      * Устанавливает функцию обратного вызова, которая будет вызываться при получении входящего сообщения от подключенного устройства.
+      * функция обратного вызова, которая будет вызываться при получении входящего сообщения от подключенного устройства.
       * @param [callback] Функция обратного вызова для входящего сообщения; опустите или передайте null/undefined, чтобы удалить.
       */
     onReceive(callback) {
@@ -741,6 +757,7 @@
   // Условно экспортируем класс как модуль CommonJS для обеспечения совместимости с браузерами и Node.js.
   // Индекс имеет значение, от наименее до наиболее подробного!
   BluetoothTerminal._logLevels = ['none', 'error', 'warn', 'info', 'log', 'debug'];
+  
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = BluetoothTerminal;
   }

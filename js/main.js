@@ -44,7 +44,7 @@ terminal.onReceive((message) => {
 
 // Set a callback that will be called every time any log message is produced by the class, regardless of the log level
 // set.
-// Устанавливаем функцию обратного вызова, которая будет вызываться каждый раз, 
+// функция обратного вызова, которая будет вызываться каждый раз, 
 // когда класс генерирует какое-либо сообщение в журнале, независимо от уровня логирования.
 terminal.onLog((logLevel, method, message) => {
   // Ignore debug messages.
@@ -71,7 +71,7 @@ connectButton.addEventListener('click', async () => {
   }
 
   // Retrieve the name of the currently connected device.
-  // Получить имя подключенного в данный момент устройства.
+  // Получить имя подключенного в данный момент устройства. или по умолчанию
   deviceNameLabel.textContent = terminal.getDeviceName() || defaultDeviceName;
 });
 
@@ -92,7 +92,6 @@ disconnectButton.addEventListener('click', () => {
 
 messageForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-
   try {
     // Send a message to the connected device.
     // Отправить сообщение на подключенное устройство.
