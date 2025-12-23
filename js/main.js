@@ -13,6 +13,7 @@ const defaultDeviceName = 'Web Bluetooth Terminal';
 const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
 let isTerminalAutoScrolling = true;
 
+//сообщение в терминал на странице
 const logToTerminal = (message, type = '') => {
   terminalContainer.insertAdjacentHTML('beforeend', `<div${type && ` class="${type}"`}>${message}</div>`);
 
@@ -82,27 +83,38 @@ disconnectButton.addEventListener('click', () => {
     // Отключитесь от подключенного устройства и очистите связанные с ним ресурсы.
     terminal.disconnect();
   } catch (error) {
-    logToTerminal(error, 'error');
+                  logToTerminal(error, 'error');
 
-    return;
-  }
+                  return;
+                  }
 
   deviceNameLabel.textContent = defaultDeviceName;
 });
 
+ //при нажатии кнопки отправить сообщение те получить событие 
+//  Мы заставляем программу «слушать» момент, когда пользователь нажмет Enter или кнопку «Отправить» внутри этой формы.
+//async (event): Мы помечаем функцию как асинхронную, потому что внутри будем использовать await 
+//(ждем завершения отправки данных по Bluetooth).
 messageForm.addEventListener('submit', async (event) => {
+  // По умолчанию браузер перезагружает страницу после отправки формы. 
+  // Эта строка отменяет стандартное поведение, чтобы наше Bluetooth-соединение не разорвалось.
   event.preventDefault();
   try {
-    // Send a message to the connected device.
-    // Отправить сообщение на подключенное устройство.
-    await terminal.send(messageInput.value);
+       //Попытка Отправить сообщение на подключенное устройство.
+      //  Вызываем метод send нашего класса BluetoothTerminal.
+      //  Программа буквально ждет здесь, пока все пакеты данных будут переданы устройству.
+       await terminal.send(messageInput.value); //Берем текст, который пользователь ввел в поле ввода.
   } catch (error) {
+    // Если во время отправки произошла ошибка, мы ловим её, 
+    // выводим сообщение об ошибке на экран через функцию logToTerminal и выходим из функции (return).
                   logToTerminal(error, 'error');
                   return;
                   }
-
+   // Если отправка прошла успешно, мы отображаем отправленное сообщение в нашем «терминале» на экране,
+   // помечая его как 'outgoing' (исходящее), чтобы пользователь видел историю переписки.
   logToTerminal(messageInput.value, 'outgoing');
-
+  // Стираем текст из поля ввода, чтобы оно стало пустым для следующего сообщения.
+  // Автоматически возвращаем курсор в поле ввода, чтобы пользователю не нужно было кликать по нему мышкой снова.
   messageInput.value = '';
   messageInput.focus();
 });

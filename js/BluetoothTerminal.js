@@ -329,7 +329,7 @@
       */
     setLogLevel(logLevel) {
       if (typeof logLevel !== 'string') {
-        throw new Error('Log level must be a string');
+        throw new Error('Log level must be a string'); //«Уровень логирования должен быть строкой».
       }
       if (!BluetoothTerminal._logLevels.includes(logLevel)) {
         throw new Error(`Log level must be one of: "${BluetoothTerminal._logLevels.join('", "')}"`);
