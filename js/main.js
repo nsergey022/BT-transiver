@@ -22,7 +22,8 @@ const uKey1=document.getElementById('userkey1');
 //  Мы заставляем программу «слушать» момент, когда пользователь нажмет Enter или кнопку «Отправить» внутри этой формы.
 //async (event): Мы помечаем функцию как асинхронную, потому что внутри будем использовать await 
 //(ждем завершения отправки данных по Bluetooth).
-
+        //при нажатии на кнопку передаем ее значение value зделать функцию универсальную для любой кнопки и любых
+        //данных как аргумент функции
 uKey1.addEventListener('click', async (event) => {
   // По умолчанию браузер перезагружает страницу после отправки формы. 
   // Эта строка отменяет стандартное поведение, чтобы наше Bluetooth-соединение не разорвалось.
@@ -48,6 +49,9 @@ uKey1.addEventListener('click', async (event) => {
   // messageInput.value = '';
   // messageInput.focus();
 });
+
+//входящее сообщение
+
 
 //-------------------------------------------
 
@@ -78,8 +82,10 @@ const terminal = new BluetoothTerminal({
 });
 
 // Set a callback that will be called when an incoming message from the connected device is received.
-// функция обратного вызова, которая будет вызываться при получении входящего сообщения от подключенного устройства.
+// функция обратного вызова
+// которая будет вызываться при получении входящего сообщения от подключенного устройства.
 terminal.onReceive((message) => {
+  document.querySelector('#in-txt').innerHTML=message;
   logToTerminal(message, 'incoming');
 });
 
