@@ -7,11 +7,51 @@ const disconnectButton = document.getElementById('disconnect');
 const terminalContainer = document.getElementById('terminal');
 const messageForm = document.getElementById('message-form');
 const messageInput = document.getElementById('message-input');
-
 // Helpers.
 const defaultDeviceName = 'Web Bluetooth Terminal';
 const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
 let isTerminalAutoScrolling = true;
+
+
+
+
+//----------для тестов-----------------------
+//ссылка на кнопку
+const uKey1=document.getElementById('userkey1');
+ //при нажатии кнопки отправить сообщение те получить событие 
+//  Мы заставляем программу «слушать» момент, когда пользователь нажмет Enter или кнопку «Отправить» внутри этой формы.
+//async (event): Мы помечаем функцию как асинхронную, потому что внутри будем использовать await 
+//(ждем завершения отправки данных по Bluetooth).
+
+uKey1.addEventListener('click', async (event) => {
+  // По умолчанию браузер перезагружает страницу после отправки формы. 
+  // Эта строка отменяет стандартное поведение, чтобы наше Bluetooth-соединение не разорвалось.
+  event.preventDefault();
+  try {
+       //Попытка Отправить сообщение на подключенное устройство.
+      // Вызываем метод send нашего класса BluetoothTerminal.
+      // Программа буквально ждет здесь, пока все пакеты данных будут переданы устройству.
+       await terminal.send(uKey1.value); //Берем текст, который пользователь ввел в поле ввода.
+       console.log(uKey1.value);
+  } catch (error) {
+    // Если во время отправки произошла ошибка, мы ловим её, 
+    // выводим сообщение об ошибке на экран через функцию logToTerminal и выходим из функции (return).
+                  logToTerminal(error, 'error');
+                  console.log(error, 'error');
+                  return;
+                  }
+   // Если отправка прошла успешно, мы отображаем отправленное сообщение в нашем «терминале» на экране,
+   // помечая его как 'outgoing' (исходящее), чтобы пользователь видел историю переписки.
+  logToTerminal(uKey1.value, 'outgoing');
+  // Стираем текст из поля ввода, чтобы оно стало пустым для следующего сообщения.
+  // Автоматически возвращаем курсор в поле ввода, чтобы пользователю не нужно было кликать по нему мышкой снова.
+  // messageInput.value = '';
+  // messageInput.focus();
+});
+
+//-------------------------------------------
+
+
 
 //сообщение в терминал на странице
 const logToTerminal = (message, type = '') => {
