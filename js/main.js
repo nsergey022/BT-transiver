@@ -8,9 +8,9 @@ const terminalContainer = document.getElementById('terminal');
 const messageForm = document.getElementById('message-form');
 const messageInput = document.getElementById('message-input');
 // Helpers.
-const defaultDeviceName = 'Web Bluetooth Terminal';
-const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
-let isTerminalAutoScrolling = true;
+const defaultDeviceName = 'Нет подключения'; //имя блютуз терминала по умолчанию
+const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2; //какойто лимит для прокрутки
+let isTerminalAutoScrolling = true; //разрешение автопрокрутки
 
 
 
@@ -66,7 +66,7 @@ const terminalData = {
 async function sendCommand(value) {
   if (!value) return;
      try {
-         //Попытка Отправить сообщение на подключенное устройство.
+         // Попытка Отправить сообщение на подключенное устройство.
          // Вызываем метод send нашего класса BluetoothTerminal.
          // Программа буквально ждет здесь, пока все пакеты данных будут переданы устройству.
          await terminal.send(value);
@@ -116,11 +116,16 @@ Object.keys(terminalData).forEach(id => {
 
 //сообщение в терминал на странице
 const logToTerminal = (message, type = '') => {
+  //вставка ноаого div в конец существующего 
+  //например: <div class="error">Error: Device must be connected to send a message</div>
   terminalContainer.insertAdjacentHTML('beforeend', `<div${type && ` class="${type}"`}>${message}</div>`);
+// управление прокруткой 
+//offsetHeight - видимая высота блока
+//scrollHeight - высота содержимого включая и его невидимую часть
 
+//если высота содержимого больше высоты блока то прокручиваем на величину scrollTop
   if (isTerminalAutoScrolling) {
     const scrollTop = terminalContainer.scrollHeight - terminalContainer.offsetHeight;
-
     if (scrollTop > 0) {
       terminalContainer.scrollTop = scrollTop;
     }
@@ -149,7 +154,7 @@ document.querySelector('#in-txt').innerHTML=message; //вывод в текст�
 //Метод split() разбивает строку на массив подстрок, используя указанный разделитель. {28.7?3.30?3.07}
 //данные ложим в массив inDat по порядку их прихода 0 1 2 3 итд
 let in_Dat =message.split("?"); // используем разделитель ? в inDat будет массив  ["знач1", "знач2", "знач3"]
-
+console.log(in_Dat);
 //можно принемать в сыром виде байтами как в примере ИИ
 });
 
@@ -169,19 +174,17 @@ terminal.onLog((logLevel, method, message) => {
 // Привязываем обработчики событий к элементам пользовательского интерфейса.
 connectButton.addEventListener('click', async () => {
   try {
-    // Open the browser Bluetooth device picker to select a device if none was previously selected, establish a
-    // connection with the selected device, and initiate communication.
     // Откройте в браузере средство выбора Bluetooth-устройств, чтобы выбрать устройство,
     // если оно ранее не было выбрано, установите
     // соединение с выбранным устройством и начните обмен данными.
     await terminal.connect();
   } catch (error) {
     logToTerminal(error, 'error');
+    deviceNameLabel.textContent = defaultDeviceName;
+    // deviceNameLabel.textContent = "MLT BT-05";
     return;
   }
-
-  // Retrieve the name of the currently connected device.
-  // Получить имя подключенного в данный момент устройства. или по умолчанию
+   // Получить имя подключенного в данный момент устройства. или по умолчанию
   deviceNameLabel.textContent = terminal.getDeviceName() || defaultDeviceName;
 });
 
@@ -196,7 +199,7 @@ disconnectButton.addEventListener('click', () => {
 
                   return;
                   }
-
+// при отключении пишем имя по умолчанию
   deviceNameLabel.textContent = defaultDeviceName;
 });
 
@@ -230,8 +233,9 @@ messageForm.addEventListener('submit', async (event) => {
 
 // Enable terminal auto-scrolling if it scrolls beyond the bottom.
 // Включить автоматическую прокрутку терминала, если она выходит за нижний край.
+//offsetHeight - видимая высота блока
+//scrollHeight - высота содержимого включая и его невидимую часть
 terminalContainer.addEventListener('scroll', () => {
   const scrollTopOffset = terminalContainer.scrollHeight - terminalContainer.offsetHeight - terminalAutoScrollingLimit;
-
   isTerminalAutoScrolling = (scrollTopOffset < terminalContainer.scrollTop);
 });

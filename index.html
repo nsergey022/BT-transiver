@@ -21,35 +21,49 @@
   <!-- Чтобы эта иконка появилась на экране,HTML-документа должна быть подключена библиотека: -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <!-- <link rel="stylesheet" href="css/normalize.css" /> -->
-  
   <link rel="stylesheet" href="styles.css" />
  
 </head>
 
 <body>
 
- <div class="app">
+ <h3>TERMINAL BLUETOOTH</h3>
   <div class="toolbar">
-    <div id="device-name" class="name">Web Bluetooth Terminal JDY-09</div>
-      <div class="buttons">
-        <button id="connect" type="button" aria-label="Connect"><i class="material-icons">bluetooth_connected</i></button>
-        <button id="disconnect" type="button" aria-label="Disconnect"><i class="material-icons">bluetooth_disabled</i></button>
-      </div>
-   </div>
-  <!-- пользовательские кнопки -->
-  <div> <button id="userkey1" type="button">key1</button></div>
-  <div> <button id="userkey2" type="button">key2</button></div>
-  <div> <button id="userkey3" type="button">key3</button></div>
+    <div>
+     <p><span id="device-name">Подключить устройство</span> </p>
+    </div>
+    <div class="buttons-tool">
+      <button id="connect" class="button-bt" type="button"><i class="material-icons">bluetooth_searching</i></button>
+      <button id="disconnect" class="button-bt" type="button"><i class="material-icons">bluetooth_disabled</i></button>
+    </div>
+    </div>
+   <!-- форма для отправки сообщений -->
+   <div id="blok-message">
+    <form id="message-form" class="message-form">
+        <input id="message-input" type="text" autocomplete="off" placeholder="Передать строку">
+        <button type="submit" class="button-bt"><i class="material-icons">send</i></button>
+    </form>
+   </div> 
+   
+  
+
+  <div class="app">
+       
+    
+
+<!-- пользовательские кнопки -->
+<div class="blok-key">
+  <div> <button id="userkey1" class="button-user" type="button">key1</button></div>
+  <div> <button id="userkey2" class="button-user"type="button">key2</button></div>
+  <div> <button id="userkey3" class="button-user"type="button">key3</button></div>
   <div> <p> <strong id="in-txt">TXT</strong> </p></div>
+  </div>
+
+
        <div id="terminal" class="terminal">
         <!-- здесь будут все собщения -->
        </div>
-       
-    <!-- форма для отправки сообщений -->
-    <form id="message-form" class="message-form">
-        <input id="message-input" type="text" aria-label="Input" autocomplete="off" placeholder="Type something to send...">
-        <button type="submit" aria-label="Send"><i class="material-icons">send</i></button>
-    </form>
+
   </div>
 
 <!-- подключение скриптов -->
