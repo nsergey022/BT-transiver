@@ -150,7 +150,8 @@ terminal.onReceive((message) => {
   logToTerminal(message, 'incoming');
 
 // для примера 
-document.querySelector('#in-txt').innerHTML=message; //вывод в текстовое поле #in-txt
+document.querySelector('#in-txt-1').innerHTML=message; //вывод в текстовое поле #in-txt
+document.querySelector('#in-txt-2').innerHTML=message; //вывод в текстовое поле #in-txt
 //Метод split() разбивает строку на массив подстрок, используя указанный разделитель. {28.7?3.30?3.07}
 //данные ложим в массив inDat по порядку их прихода 0 1 2 3 итд
 let in_Dat =message.split("?"); // используем разделитель ? в inDat будет массив  ["знач1", "знач2", "знач3"]

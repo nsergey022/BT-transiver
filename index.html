@@ -30,36 +30,42 @@
  <h3>TERMINAL BLUETOOTH</h3>
   <div class="toolbar">
     <div>
-     <p><span id="device-name">Подключить устройство</span> </p>
+      <p><span id="device-name">Подключить устройство</span></p>
     </div>
-    <div class="buttons-tool">
+    
+      <div class="buttons-tool">
       <button id="connect" class="button-bt" type="button"><i class="material-icons">bluetooth_searching</i></button>
       <button id="disconnect" class="button-bt" type="button"><i class="material-icons">bluetooth_disabled</i></button>
-    </div>
-    </div>
+      </div>
+     </div>
    <!-- форма для отправки сообщений -->
    <div id="blok-message">
     <form id="message-form" class="message-form">
-        <input id="message-input" type="text" autocomplete="off" placeholder="Передать строку">
+        <input id="message-input" type="text" autocomplete="off" placeholder="ОТПРАВИТЬ КОМАНДУ">
         <button type="submit" class="button-bt"><i class="material-icons">send</i></button>
     </form>
    </div> 
+
+   <!-- вхлдящие данные -->
+  <div class="input-data">
+     <div>
+       <p> <strong id="in-tx1-t">IN DATA-1</strong> </p>
+     </div>
+     <div>
+       <p> <strong id="in-txt-2">IN DATA-2</strong> </p>
+     </div>
    
-  
-
-  <div class="app">
-       
-    
-
-<!-- пользовательские кнопки -->
+  </div>
+   
+ <!-- пользовательские кнопки -->
 <div class="blok-key">
   <div> <button id="userkey1" class="button-user" type="button">key1</button></div>
-  <div> <button id="userkey2" class="button-user"type="button">key2</button></div>
-  <div> <button id="userkey3" class="button-user"type="button">key3</button></div>
-  <div> <p> <strong id="in-txt">TXT</strong> </p></div>
-  </div>
+  <div> <button id="userkey2" class="button-user" type="button">key2</button></div>
+  <div> <button id="userkey3" class="button-user" type="button">key3</button></div>
+ </div>
 
 
+<div class="app">
        <div id="terminal" class="terminal">
         <!-- здесь будут все собщения -->
        </div>

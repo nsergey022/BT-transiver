@@ -21,22 +21,31 @@
     box-shadow: 0 4px 10px rgb(0 0 0 / 42%);
     text-align: center;
     background: #2196F3;
-
+    width: 450px;
   }
    .toolbar {
+    width: 450px;
     display: flex; /*Современная замена float: left  */
-    align-items: center; /*выравнивание*/
+    flex-direction: row;
     flex-shrink: 0; /* не делай эту кнопку меньше её заданного размера».*/
+
     position: sticky;/* Делаем панель липкой */
     top: 0;          /* Прилипать к самому верху */
     z-index: 1000;   /* Чтобы панель была поверх остального контента */
     background-color: #4d545f;/* Добавим фон и тень, чтобы она выделялась при прокрутке */
     box-shadow: 0 14px 5px 6px rgba(0,0,0,0.1);
-    justify-content: space-between;
-    padding: 6px;
+   
+    /* padding: 6px; */
     color: azure;
+    justify-content: space-between;
+   
+
+
     }
-       
+  #device-name{
+    margin: 1px 5px;
+    user-select: none;
+  }
    /* .toolbar .name {
       flex-grow: 1;
       padding: 0 8px;
@@ -44,16 +53,14 @@
       } */
        
    .buttons-tool {
-    flex-shrink: 0;
     display: flex; 
+    flex-shrink: 0;
     }
 
    /* кнопки подключения к блютуз */
   .button-bt {
     /* display: flex;  */
     background: rgb(6, 177, 251);
-    /* border: #e5a978; */
-    /* color:  #4CAF50; */
     cursor: pointer;
     margin:2px;
     padding: 9px;
@@ -61,6 +68,8 @@
     user-select: none;
     border-radius: 4px; /* Рекомендуется добавить небольшой радиус для фона */
     flex-shrink: 0;  /* не делай эту кнопку меньше её заданного размера».*/
+    /* border: #e5a978; */
+    /* color:  #4CAF50; */
    }
    
  /* Состояние при наведении курсора на кнопки блютуз */
@@ -71,29 +80,58 @@
 
 
 #blok-message{
+  width: 450px;
   background-color: #4d545f;
-  margin-top: 2px;
-  /* display: flex; */
-}
+  margin-top: 1px;
+  }
 
 
 /* строка ввода */
 .message-form {
   display: flex;
-  /* flex-shrink: 0; */
+  flex-shrink: 0;
   justify-content: space-between;
-  padding: 6px;
+  /* padding: 6px; */
   }       
-  input {
-    background: rgb(167, 165, 162);
+
+  #message-input {
+    background: black;
+    color: rgb(7, 219, 7);
     /* border: none; */
     
     /* flex-grow: 1; */
     font: normal 16px/1.5 'Roboto Mono', monospace;
+
+    margin: 1px 5px;
+    
+    width: 330px;
+    }
+  .input-data{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 450px;
+    background-color: cadetblue ;
+    
+  }  
+
+  .input-data p{ 
+    width: 100px;
+    padding: 9px;
+    margin: 2px;
+    background-color: #d6551d;
+    color: #e8f0e8;
+    border: 2px solid black
+    
+  }
+
+  /* input {
+    background: rgb(167, 165, 162);
+    font: normal 16px/1.5 'Roboto Mono', monospace;
     padding: 1px 5px;
     color: black;
     width: 370px;
-    }
+    } */
 
   .app {/* */
     display: flex; /*гибкий контейне */
@@ -104,7 +142,7 @@
   .button-user {
     background: rgb(251, 6, 6);
     /* border: #e5a978; */
-    color:  #0e0e0e;
+    color:  white;
     cursor: pointer;
     margin:2px;
     padding: 9px;
