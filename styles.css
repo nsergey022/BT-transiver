@@ -21,10 +21,10 @@
     box-shadow: 0 4px 10px rgb(0 0 0 / 42%);
     text-align: center;
     background: #2196F3;
-    width: 450px;
+    width: 365px;;
   }
    .toolbar {
-    width: 450px;
+    width: 365px;
     display: flex; /*Современная замена float: left  */
     flex-direction: row;
     flex-shrink: 0; /* не делай эту кнопку меньше её заданного размера».*/
@@ -80,7 +80,7 @@
 
 
 #blok-message{
-  width: 450px;
+  width: 365px;;
   background-color: #4d545f;
   margin-top: 1px;
   }
@@ -104,13 +104,13 @@
 
     margin: 1px 5px;
     
-    width: 330px;
+    width: 300px;
     }
   .input-data{
     display:flex;
     flex-direction: row;
     justify-content: space-evenly;
-    width: 450px;
+    width: 365px;;
     background-color: cadetblue ;
     
   }  
@@ -190,6 +190,7 @@ button i.material-icons {
 
 
   .terminal {
+    width: 365px;
           border: 10px solid rgba(#000000, 0.12);
           border-width: 1px 0;
           flex-grow: 1;
