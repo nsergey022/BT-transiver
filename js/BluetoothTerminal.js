@@ -13,16 +13,8 @@
 * @param [onConnectCallback] Необязательная функция обратного вызова при успешном подключении
 * @param [onDisconnectCallback] Необязательная функция обратного вызова при отключении
 */
-    constructor(optionsOrServiceUuid, characteristicUuid,
-    // @deprecated
-    receiveSeparator,
-    // @deprecated
-    sendSeparator,
-    // @deprecated
-    onConnectCallback,
-    // @deprecated
-    onDisconnectCallback // @deprecated // @устаревший
-    ) {
+                                                        // @deprecated   // @deprecated // @deprecated    // @deprecated
+ constructor(optionsOrServiceUuid, characteristicUuid, receiveSeparator, sendSeparator, onConnectCallback,onDisconnectCallback){
       // Обработчики событий, привязанные к этому экземпляру, поддерживают правильный контекст.
       this._boundCharacteristicValueChangedListener = void 0;
       this._boundGattServerDisconnectedListener = void 0;
@@ -37,10 +29,8 @@
       this._onReceiveCallback = null;
       this._onLogCallback = null;
       this._logLevel = 'log';
-      // Текущий объект Bluetooth-устройства.
-      this._device = null;
-      // Текущий объект характеристики Bluetooth.
-      this._characteristic = null;
+      this._device = null;          // Текущий объект Bluetooth-устройства.
+      this._characteristic = null;  // Текущий объект характеристики Bluetooth.
       // Буфер, в котором накапливаются входящие значения характеристик до тех пор, пока не будет 
       //получен разделительный символ.
       this._receiveBuffer = '';
@@ -48,6 +38,7 @@
       this._boundCharacteristicValueChangedListener = this._characteristicValueChangedListener.bind(this);
       this._boundGattServerDisconnectedListener = this._gattServerDisconnectedListener.bind(this);
       this._logDebug('constructor', 'BluetoothTerminal instance initialized');
+      
       if (typeof optionsOrServiceUuid === 'object') {
             const options = optionsOrServiceUuid;
             if (options.serviceUuid !== undefined) {
@@ -111,17 +102,17 @@
     setServiceUuid(uuid) {
        //если не число и не строка
       if (!Number.isInteger(uuid) && typeof uuid !== 'string') {
-           throw new Error('Service UUID must be either an integer or a string');
+           throw new Error('Service UUID must be either an integer or a string');//генерирование ошибки
           }
           //если равно 0
       if (uuid === 0) {
-          throw new Error('Service UUID cannot be zero');
+          throw new Error('Service UUID cannot be zero');//генерирование ошибки
           }
           //если строка но она пустая
       if (typeof uuid === 'string' && uuid.trim() === '') {
-          throw new Error('Service UUID cannot be an empty string');
+          throw new Error('Service UUID cannot be an empty string');//генерирование ошибки
           }
-        
+       //все ок  
       this._serviceUuid = uuid; //присваиваем значение сервиса UUID
       this._logDebug('setServiceUuid', `Service UUID set to "${uuid}"`);
     }
@@ -134,17 +125,17 @@
     setCharacteristicUuid(uuid) {
         //если не число и не строка
       if (!Number.isInteger(uuid) && typeof uuid !== 'string') {
-        throw new Error('Characteristic UUID must be either an integer or a string');
+        throw new Error('Characteristic UUID must be either an integer or a string');//генерирование ошибки
         }
         //если равно 0
       if (uuid === 0) {
-        throw new Error('Characteristic UUID cannot be zero');
+        throw new Error('Characteristic UUID cannot be zero');//генерирование ошибки
         }
       //если строка но она пустая
       if (typeof uuid === 'string' && uuid.trim() === '') {
-        throw new Error('Characteristic UUID cannot be an empty string');
+        throw new Error('Characteristic UUID cannot be an empty string');//генерирование ошибки
         }
-
+        //все ок
       this._characteristicUuid = uuid; //присваиваем значение характеристики UUID
       this._logDebug('setCharacteristicUuid', `Characteristic UUID set to "${uuid}"`);
     }
@@ -157,8 +148,9 @@
      */
     setCharacteristicValueSize(size) {
       if (!Number.isInteger(size) || size <= 0) {
-        throw new Error('Characteristic value size must be a positive integer');
+        throw new Error('Characteristic value size must be a positive integer');//генерирование ошибки
         }
+        //все ок
       this._characteristicValueSize = size;
       this._logDebug('setCharacteristicValueSize', `Characteristic value size set to "${size}"`);
     }
@@ -171,12 +163,13 @@
     setReceiveSeparator(separator) {
       //проверка  если это не строка
       if (typeof separator !== 'string') {
-        throw new Error('Receive separator must be a string');
+        throw new Error('Receive separator must be a string'); //генерирование ошибки
         }
         // проверка если больше чем один символ
       if (separator.length !== 1) {
-        throw new Error('Receive separator length must be equal to one character');
+        throw new Error('Receive separator length must be equal to one character');//генерирование ошибки
       }
+      //все ок
       this._receiveSeparator = separator;
       this._logDebug('setReceiveSeparator', `Receive separator set to "${separator}"`);
     }
@@ -188,11 +181,12 @@
      */
     setSendSeparator(separator) {
       if (typeof separator !== 'string') {
-        throw new Error('Send separator must be a string');  //немедленый вывод ошибки если не строка
+        throw new Error('Send separator must be a string');  //генерирование ошибки
       }
       if (separator.length !== 1) {
-        throw new Error('Send separator length must be equal to one character'); //немедленый вывод ошибки если больше 1-го символа
+        throw new Error('Send separator length must be equal to one character'); //генерирование ошибки
       }
+      //все ок
       this._sendSeparator = separator;
       this._logDebug('setSendSeparator', `Send separator set to "${separator}"`);
     }
@@ -205,8 +199,7 @@
       this.onConnect(callback);
     }
     /**
-     * функция обратного вызова, которая будет вызвана после полного подключения устройства и 
-     * начала обмена данными.
+     * функция обратного вызова, которая будет вызвана после полного подключения устройства и  начала обмена данными.
      * @param [callback] Функция обратного вызова для успешного подключения; опустите или передайте null/undefined, чтобы удалить
      */
     onConnect(callback) {
@@ -249,17 +242,18 @@
       this._logDebug('onLog', `onLog callback ${this._onLogCallback === null ? 'removed' : 'set'}`);
     }
     /**
-      * Устанавливает уровень логирования, определяющий, какие сообщения отображаются в консоли. Иерархия уровней (от наименее подробного до
-      * наиболее подробного) следующая: "none", "error", "warn", "info", "log", "debug". Каждый уровень включает все менее подробные уровни.
-      * @param logLevel Уровень логирования в виде строки ("none", "error", "warn", "info", "log" или "debug")
-      */
+    * Устанавливает уровень логирования, определяющий, какие сообщения отображаются в консоли. Иерархия уровней (от наименее подробного до
+    * наиболее подробного) следующая: "none", "error", "warn", "info", "log", "debug". Каждый уровень включает все менее подробные уровни.
+    * @param logLevel Уровень логирования в виде строки ("none", "error", "warn", "info", "log" или "debug")
+    */
     setLogLevel(logLevel) {
       if (typeof logLevel !== 'string') {
-        throw new Error('Log level must be a string'); //«Уровень логирования должен быть строкой».
+        throw new Error('Log level must be a string'); //генерирование ошибки «Уровень логирования должен быть строкой».
       }
       if (!BluetoothTerminal._logLevels.includes(logLevel)) {
-        throw new Error(`Log level must be one of: "${BluetoothTerminal._logLevels.join('", "')}"`);
+        throw new Error(`Log level must be one of: "${BluetoothTerminal._logLevels.join('", "')}"`); //генерирование ошибки
       }
+      //все ок
       this._logLevel = logLevel;
       this._logDebug('setLogLevel', `Log level set to "${logLevel}"`);
     }
@@ -272,66 +266,67 @@
       * @returns Promise, который разрешается, когда устройство полностью подключено и связь началась, или отклоняется, если
       * возникает ошибка.
       */
-    async connect() {
-      this._logInfo('connect', 'Initiating connection process...');
-      if (!this._device) {
-        this._logInfo('connect', 'Opening browser Bluetooth device picker...');
+  async connect() {
+   this._logInfo('connect', 'Initiating connection process...');
+    
+    if (!this._device) { //если небыло подключения
+       this._logInfo('connect', 'Opening browser Bluetooth device picker...');
         try {
-          this._device = await this._requestDevice(this._serviceUuid);
-        } catch (error) {
-          this._logError('connect', error, errorMessage => `Connection failed: "${errorMessage}"`);
-          throw error;
-        }
+             this._device = await this._requestDevice(this._serviceUuid);
+            } catch (error) {
+                          //при ошибке подключения 
+                        this._logError('connect', error, errorMessage => `Connection failed: "${errorMessage}"`);
+                        throw error;
+                        }
       } else {
-        this._logInfo('connect', `Connecting to previously selected device "${this.getDeviceName()}"...`);
-      }
-      // Зарегистрируйте обработчик событий для обработки разрыва соединения и попытки автоматического переподключения.
-      this._device.addEventListener('gattserverdisconnected', this._boundGattServerDisconnectedListener);
-      try {
+              this._logInfo('connect', `Connecting to previously selected device "${this.getDeviceName()}"...`);
+             }
+   // Зарегистрируйте обработчик событий для обработки разрыва соединения и попытки автоматического переподключения.
+   this._device.addEventListener('gattserverdisconnected', this._boundGattServerDisconnectedListener);
+   try {
         await this._connectDevice();
-      } catch (error) {
-        this._logError('connect', error, errorMessage => `Connection failed: "${errorMessage}"`);
-        throw error;
-      }
-      this._logInfo('connect', `Device "${this.getDeviceName()}" successfully connected`);
-    }
+       } catch (error) {
+                  //при ошибке
+                  this._logError('connect', error, errorMessage => `Connection failed: "${errorMessage}"`);
+                  throw error;
+                  }
+
+    this._logInfo('connect', `Device "${this.getDeviceName()}" successfully connected`);
+  }
   
-     /**
-      * Отключается от подключенного устройства и очищает связанные ресурсы.
-      * Если настроено, функция обратного вызова `onDisconnect()` будет выполнена после полного отключения.
-      */
-    disconnect() {
-      if (!this._device) {
+  /**
+  * Отключается от подключенного устройства и очищает связанные ресурсы.
+  * Если настроено, функция обратного вызова `onDisconnect()` будет выполнена после полного отключения.
+  */
+  disconnect() {
+   if (!this._device) {
         this._logWarn('disconnect', 'No device is currently connected');
         return;
-      }
-      this._logInfo('disconnect', `Initiating disconnection from device "${this.getDeviceName()}"...`);
-      if (this._characteristic) {
-        // Stop receiving and processing incoming messages from the device.
+        }
+   this._logInfo('disconnect', `Initiating disconnection from device "${this.getDeviceName()}"...`);
+   if (this._characteristic) {
         // Прекратить прием и обработку входящих сообщений с устройства.
         this._characteristic.removeEventListener('characteristicvaluechanged', this._boundCharacteristicValueChangedListener);
         this._characteristic = null;
       }
-  
-      // Remove reconnection handler to prevent automatic reconnection attempts.
-      // Удалите обработчик повторного подключения, чтобы предотвратить автоматические попытки повторного подключения.
-      this._device.removeEventListener('gattserverdisconnected', this._boundGattServerDisconnectedListener);
-      if (!this._device.gatt) {
-        throw new Error('GATT server is not available');
+   // Удалите обработчик повторного подключения, чтобы предотвратить автоматические попытки повторного подключения.
+   this._device.removeEventListener('gattserverdisconnected', this._boundGattServerDisconnectedListener);
+   if (!this._device.gatt) {
+      throw new Error('GATT server is not available'); //генерирование ошибки
       }
-      if (!this._device.gatt.connected) {
+   if (!this._device.gatt.connected) {
         this._logWarn('disconnect', `Device "${this.getDeviceName()}" is already disconnected`);
         return;
       }
       try {
-        this._device.gatt.disconnect();
-      } catch (error) {
-        this._logError('disconnect', error, errorMessage => `Disconnection failed: "${errorMessage}"`);
-        throw error;
-      }
-      this._logInfo('disconnect', `Device "${this.getDeviceName()}" successfully disconnected`);
-      this._device = null;
-      if (this._onDisconnectCallback) {
+            this._device.gatt.disconnect();
+          } catch (error) {
+              this._logError('disconnect', error, errorMessage => `Disconnection failed: "${errorMessage}"`);
+              throw error; 
+              }
+    this._logInfo('disconnect', `Device "${this.getDeviceName()}" successfully disconnected`);
+    this._device = null;
+    if (this._onDisconnectCallback) {
         this._logDebug('disconnect', `Executing onDisconnect callback...`);
         this._onDisconnectCallback();
         this._logDebug('disconnect', `onDisconnect callback was executed successfully`);
@@ -362,32 +357,31 @@
     async send(message) {
      // Убедитесь, что сообщение является строкой; по умолчанию используется пустая строка, 
      // если значение не определено/равно null.
-      message = String(message || '');
-       // Проверяем, не пусто ли сообщение после преобразования.
-      if (!message) {
-        throw new Error('Message must be a non-empty string');
-      }
+    message = String(message || '');
+    // Проверяем, не пусто ли сообщение после преобразования.
+    if (!message) {
+        throw new Error('Message must be a non-empty string'); //генерирование ошибки
+        }
         // Перед попыткой отправки проверьте канал связи.
-      if (!this._device || !this._characteristic) {
-        throw new Error('Device must be connected to send a message');
-      }
+    if (!this._device || !this._characteristic) {
+         throw new Error('Device must be connected to send a message'); //генерирование ошибки
+         }
       this._logDebug('send', `Sending message: "${message}"...`);
-        // Добавить заданный разделитель отправки к сообщению.
-      message += this._sendSeparator;
+    message += this._sendSeparator;// Добавить заданный разделитель отправки к сообщению.
     
-      // Разделить сообщение на фрагменты в соответствии с ограничением размера значения характеристики.
-      const chunks = [];
+    // Разделить сообщение на фрагменты в соответствии с ограничением размера значения характеристики.
+    const chunks = [];
       for (let i = 0; i < message.length; i += this._characteristicValueSize) {
-        chunks.push(message.slice(i, i + this._characteristicValueSize));
-      }
-      this._logDebug('send', `Sending in ${chunks.length} chunk${chunks.length > 1 ? 's' : ''}: "${chunks.join('", "')}"...`);
-      try {
-           // Отправка фрагментов осуществляется последовательно.
-          for (let i = 0; i < chunks.length; i++) {
-          this._logDebug('send', `Sending chunk ${i + 1}/${chunks.length}: "${chunks[i]}"...`);
-          await this._characteristic.writeValue(new TextEncoder().encode(chunks[i]));
+           chunks.push(message.slice(i, i + this._characteristicValueSize));
           }
-          } catch (error) {
+    this._logDebug('send', `Sending in ${chunks.length} chunk${chunks.length > 1 ? 's' : ''}: "${chunks.join('", "')}"...`);
+      try {
+       // Отправка фрагментов осуществляется последовательно.
+            for (let i = 0; i < chunks.length; i++) {
+            this._logDebug('send', `Sending chunk ${i + 1}/${chunks.length}: "${chunks[i]}"...`);
+            await this._characteristic.writeValue(new TextEncoder().encode(chunks[i]));
+            }
+         } catch (error) {
                    this._logError('send', error, errorMessage => `Sending failed: "${errorMessage}"`);
                    throw error;
                   }
@@ -399,7 +393,7 @@
       * @returns Имя устройства или пустую строку, если устройство не подключено или не имеет имени.
       */
     getDeviceName() {
-      return this._device && this._device.name ? this._device.name : '';
+      return this._device && this._device.name ? this._device.name : ''; //возвращает имя девайса или пустую строку
     }
      /**
       * Устанавливает соединение с текущим устройством, начинает обмен данными, настраивает обработчик событий для обработки
@@ -409,17 +403,17 @@
       * @returns Promise, который разрешается, когда устройство полностью подключено и обмен данными начался, или отклоняется, если
       * возникает ошибка.
       */
-    async _connectDevice() {
+  async _connectDevice() {
       if (!this._device) {
-        throw new Error('Device must be selected to connect');
-      }
+        throw new Error('Device must be selected to connect'); //генерация ошибки
+        }
       this._log('_connectDevice', `Establishing connection to device "${this.getDeviceName()}"...`);
       try {
-        this._characteristic = await this._startNotifications(this._device, this._serviceUuid, this._characteristicUuid);
-      } catch (error) {
-        this._logError('_connectDevice', error, errorMessage => `Connection failed: "${errorMessage}"`);
-        throw error;
-      }
+           this._characteristic = await this._startNotifications(this._device, this._serviceUuid, this._characteristicUuid);
+          } catch (error) {
+                 this._logError('_connectDevice', error, errorMessage => `Connection failed: "${errorMessage}"`);
+                 throw error;
+                 }
   
          // Настройте обработчик событий для приема и обработки входящих сообщений с устройства.
       this._characteristic.addEventListener('characteristicvaluechanged', this._boundCharacteristicValueChangedListener);
@@ -427,47 +421,44 @@
         this._logDebug('_connectDevice', `Executing onConnect callback...`);
         this._onConnectCallback();
         this._logDebug('_connectDevice', `onConnect callback was executed successfully`);
-      }
+        }
       this._log('_connectDevice', 'Connection established and communication started');
     }
   
-    /**
-      * Открывает средство выбора Bluetooth-устройств в браузере и позволяет пользователю выбрать устройство, поддерживающее указанный
-      * UUID службы. Этот метод не имеет состояния и не изменяет никаких свойств экземпляра.
-      * @async
-      * @param serviceUuid UUID службы
-      * @returns Promise, который разрешается с выбранным объектом Bluetooth-устройства.
-      */
-    async _requestDevice(serviceUuid) {
+  /**
+  * Открывает средство выбора Bluetooth-устройств в браузере и позволяет пользователю выбрать устройство, поддерживающее указанный
+  * UUID службы. Этот метод не имеет состояния и не изменяет никаких свойств экземпляра.
+  * @async
+  * @param serviceUuid UUID службы
+  * @returns Promise, который разрешается с выбранным объектом Bluetooth-устройства.
+  */
+  async _requestDevice(serviceUuid) {
       this._logDebug('_requestDevice', `Opening browser Bluetooth device picker for service UUID "${serviceUuid}"...`);
       let device;
       try {
-        device = await navigator.bluetooth.requestDevice({
-          filters: [{
-            services: [serviceUuid]
-          }]
-        });
-      } catch (error) {
-        this._logError('_requestDevice', error, errorMessage => `Requesting device failed: "${errorMessage}"`);
-        throw error;
-      }
+          device = await navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]});
+          } catch (error) {
+                  this._logError('_requestDevice', error, errorMessage => `Requesting device failed: "${errorMessage}"`);
+                  throw error;
+                  }
+
       this._logDebug('_requestDevice', `Device "${device.name}" selected`);
       return device;
     }
     /**
-      * Устанавливает соединение с предоставленным GATT-сервером устройства, получает указанную службу, обращается к
-      * указанной характеристике и запускает уведомления для этой характеристики. Этот метод не имеет состояния и не
-      * изменяет какие-либо свойства экземпляра.
-      * @async
-      * @param device Объект Bluetooth-устройства
-      * @param serviceUuid UUID службы
-      * @param characteristicUuid UUID характеристики
-      * @returns Promise, который разрешается с объектом характеристики Bluetooth с включенными уведомлениями.
-      */
+    * Устанавливает соединение с предоставленным GATT-сервером устройства, получает указанную службу, обращается к
+    * указанной характеристике и запускает уведомления для этой характеристики. Этот метод не имеет состояния и не
+    * изменяет какие-либо свойства экземпляра.
+    * @async
+    * @param device Объект Bluetooth-устройства
+    * @param serviceUuid UUID службы
+    * @param characteristicUuid UUID характеристики
+    * @returns Promise, который разрешается с объектом характеристики Bluetooth с включенными уведомлениями.
+    */
     async _startNotifications(device, serviceUuid, characteristicUuid) {
       if (!device.gatt) {
         throw new Error('GATT server is not available');
-      }
+        }
       this._log('_startNotifications', 'Connecting to GATT server...');
       const server = await device.gatt.connect();
       this._log('_startNotifications', 'GATT server connected successfully');
@@ -491,25 +482,25 @@
     _characteristicValueChangedListener(event) {
      // При срабатывании события с помощью этого слушателя `event.target`
      // будет иметь значение `BluetoothRemoteGATTCharacteristic`.
-      const value = new TextDecoder().decode(event.target.value);
-      this._logDebug('_characteristicValueChangedListener', `Value received: "${value}"`);
+    const value = new TextDecoder().decode(event.target.value);
+    this._logDebug('_characteristicValueChangedListener', `Value received: "${value}"`);
       for (const c of value) {
         if (c === this._receiveSeparator) {
-          const message = this._receiveBuffer.trim();
-          this._receiveBuffer = '';
-          if (message) {
+           const message = this._receiveBuffer.trim();
+           this._receiveBuffer = '';
+        if (message) {
             this._logDebug('_characteristicValueChangedListener', `Message received: "${message}"`);
             // @deprecated
             this.receive(message);
             if (this._onReceiveCallback) {
-              this._logDebug('_characteristicValueChangedListener', `Executing onReceive callback with message "${message}"...`);
-              this._onReceiveCallback(message);
-              this._logDebug('_characteristicValueChangedListener', 'onReceive callback was executed successfully');
-            }
+               this._logDebug('_characteristicValueChangedListener', `Executing onReceive callback with message "${message}"...`);
+               this._onReceiveCallback(message);
+               this._logDebug('_characteristicValueChangedListener', 'onReceive callback was executed successfully');
+               }
           }
         } else {
-          this._receiveBuffer += c;
-        }
+               this._receiveBuffer += c;
+               }
       }
     }
     /**
@@ -522,76 +513,78 @@
       // При срабатывании события с помощью этого слушателя `event.target` будет иметь значение `BluetoothDevice`.
       const device = event.target;
       this._log('_gattServerDisconnectedListener', `Device "${device.name}" was disconnected...`);
-      if (this._onDisconnectCallback) {
-        this._logDebug('_gattServerDisconnectedListener', `Executing onDisconnect callback...`);
-        this._onDisconnectCallback();
-        this._logDebug('_gattServerDisconnectedListener', `onDisconnect callback was executed successfully`);
-      }
+        if (this._onDisconnectCallback) {
+           this._logDebug('_gattServerDisconnectedListener', `Executing onDisconnect callback...`);
+           this._onDisconnectCallback();
+           this._logDebug('_gattServerDisconnectedListener', `onDisconnect callback was executed successfully`);
+          }
       // Здесь `this._device` не переназначается `device` (`event.target`), потому что `this._device` _должен_ быть уже установлен 
       //во время предыдущего процесса подключения и _должен_ оставаться действительным для повторного подключения.
-      this._log('_gattServerDisconnectedListener', `Attempting to reconnect to device "${this.getDeviceName()}"...`);
+    this._log('_gattServerDisconnectedListener', `Attempting to reconnect to device "${this.getDeviceName()}"...`);
       // Использование IIFE для применения async/await при сохранении типа возвращаемого значения void, необходимого для обработчика событий.
       // Интерфейс. Здесь необходим try/catch, чтобы избежать распространения ошибки, поскольку нет места для ее перехвата.
       (async () => {
         try {
-          await this._connectDevice();
-          this._log('_gattServerDisconnectedListener', `Device "${this.getDeviceName()}" successfully reconnected`);
-        } catch (error) {
-          this._logError('_gattServerDisconnectedListener', error, errorMessage => `Reconnection failed: "${errorMessage}"`);
-        }
+             await this._connectDevice();
+             this._log('_gattServerDisconnectedListener', `Device "${this.getDeviceName()}" successfully reconnected`);
+            } catch (error) {
+                    this._logError('_gattServerDisconnectedListener', error, errorMessage => `Reconnection failed: "${errorMessage}"`);
+                   }
       })();
     }
     
+    //формирование логов сообщений
     _logGeneric(logLevel, method, message, error) {
       if (this._onLogCallback) {
-        this._onLogCallback(logLevel, method, message, error);
-      }
+           this._onLogCallback(logLevel, method, message, error);
+          }
       if (BluetoothTerminal._logLevels.indexOf(this._logLevel) < BluetoothTerminal._logLevels.indexOf(logLevel)) {
-        return;
-      }
-      const logMessage = `[BluetoothTerminal][${method}] ${message}`;
-      switch (logLevel) {
-        case 'debug':
-          console.debug(logMessage);
+           return;
+           }
+
+     const logMessage = `[BluetoothTerminal][${method}] ${message}`;
+     switch (logLevel) {
+        case 'debug':console.debug(logMessage);
           break;
-        case 'log':
-          console.log(logMessage);
+        case 'log':  console.log(logMessage);
           break;
-        case 'info':
-          console.info(logMessage);
+        case 'info':console.info(logMessage);
           break;
-        case 'warn':
-          console.warn(logMessage);
+        case 'warn': console.warn(logMessage);
           break;
-        case 'error':
-          console.error(logMessage);
+        case 'error':console.error(logMessage);
           break;
         default:
           throw new Error(`Log level must be one of: "${BluetoothTerminal._logLevels.join('", "')}"`);
       }
     }
+
     _logDebug(method, message) {
       this._logGeneric('debug', method, message);
     }
+    
     _log(method, message) {
       this._logGeneric('log', method, message);
     }
+    
     _logInfo(method, message) {
       this._logGeneric('info', method, message);
     }
+   
     _logWarn(method, message) {
       this._logGeneric('warn', method, message);
     }
+   
     _logError(method, error, messageConstructor) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       const message = messageConstructor(errorMessage);
       this._logGeneric('error', method, message, error);
     }
   }
+
   // Условно экспортируем класс как модуль CommonJS для обеспечения совместимости с браузерами и Node.js.
   // Индекс имеет значение, от наименее до наиболее подробного!
   BluetoothTerminal._logLevels = ['none', 'error', 'warn', 'info', 'log', 'debug'];
-  
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = BluetoothTerminal;
-  }
+       module.exports = BluetoothTerminal;
+      }

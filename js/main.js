@@ -16,51 +16,33 @@ let isTerminalAutoScrolling = true; //разрешение автопрокру�
 
 
 //----------для тестов-----------------------
-//ссылка на кнопку
-// const uKey1=document.getElementById('userkey1');
-// let znach1 ='111\n456'
-//  // при нажатии кнопки отправить сообщение те получить событие 
-//  // заставляем программу «слушать» момент, когда пользователь нажмет Enter или кнопку «Отправить» внутри этой формы.
-//  // async (event): Мы помечаем функцию как асинхронную, потому что внутри будем использовать await 
-//  // (ждем завершения отправки данных по Bluetooth).
-// uKey1.addEventListener('click',async (event) => {
-//    // По умолчанию браузер перезагружает страницу после отправки формы. 
-//   // Эта строка отменяет стандартное поведение, чтобы наше Bluetooth-соединение не разорвалось.
-//   event.preventDefault();
-//   try {
-//        //Попытка Отправить сообщение на подключенное устройство.
-//       // Вызываем метод send нашего класса BluetoothTerminal.
-//       // Программа буквально ждет здесь, пока все пакеты данных будут переданы устройству.
-//        await terminal.send(znach1); //Берем текст, который пользователь ввел в поле ввода.
-//        console.log(znach1);
-//   } catch (error) {
-//     // Если во время отправки произошла ошибка, мы ловим её, 
-//     // выводим сообщение об ошибке на экран через функцию logToTerminal и выходим из функции (return).
-//                   logToTerminal(error, 'error');
-//                   console.log(error, 'error');
-//                   console.log(znach1);
-//                   return;
-//                   }
-//    // Если отправка прошла успешно, 
-//    // мы отображаем отправленное сообщение в нашем «терминале» на экране,
-//    // помечая его как 'outgoing' (исходящее), чтобы пользователь видел историю переписки.
-//   logToTerminal(znach1, 'outgoing');
-//   // Стираем текст из поля ввода, чтобы оно стало пустым для следующего сообщения.
-//   // Автоматически возвращаем курсор в поле ввода, чтобы пользователю не нужно было кликать по нему мышкой снова.
-//   messageInput.value = '';
-//   messageInput.focus();
-// });
-
 
 // Хранилище ваших значений как ID == userkey1 и значение =='111'
-//Если вам нужно изменить команду для второй кнопки прямо в процессе работы программы,
+// Если вам нужно изменить команду для второй кнопки прямо в процессе работы программы,
 // вы просто пишете terminalData.userkey2 = 'новое значение';
 const terminalData = {
   'userkey1': '111',
   'userkey2': '222',
   'userkey3': '333',
-  'specialKey': 'RESET_CMD'
+  'specialKey': 'RESET_CMD' //этого нет 
 };
+
+// в цикле Перебираем ключи объекта terminalData 
+Object.keys(terminalData).forEach(id => {
+  const btn = document.getElementById(id);
+  // console.log(btn);
+  // по каждому ключю заходим сюда
+  if (btn) {
+      btn.addEventListener('click', async (event) => {
+      // По умолчанию браузер перезагружает страницу после отправки формы. 
+      // Эта строка отменяет стандартное поведение, чтобы наше Bluetooth-соединение не разорвалось.
+      event.preventDefault();
+      const currentVal = terminalData[id]; // Берем актуальное значение из объекта по ID кнопки
+      console.log(currentVal);
+      await sendCommand(currentVal); // Вызываем функцию для отправки
+      });
+  }
+});
 
 // Эта функция будет принимать value как аргумент и выполнять всю логику с терминалом.
 async function sendCommand(value) {
@@ -82,30 +64,15 @@ async function sendCommand(value) {
    // помечая его как 'outgoing' (исходящее), чтобы пользователь видел историю переписки.
    console.log('Успешно отправлено:', value);
    logToTerminal(value, 'outgoing');
+   //это для поля ввода и отправки сообщения
   // Стираем текст из поля ввода, чтобы оно стало пустым для следующего сообщения.
   // Автоматически возвращаем курсор в поле ввода, чтобы пользователю не нужно было кликать по нему мышкой снова.
   //это можно пото отключить вывод логирования
-   messageInput.value = '';
-   messageInput.focus();
+  // messageInput.value = '';
+  // messageInput.focus();  //отключить что бы не вызывать виртуальную клавиатуру
 }
 
-// Перебираем ключи нашего объекта
-Object.keys(terminalData).forEach(id => {
-  const btn = document.getElementById(id);
-  // console.log(btn);
-  if (btn) {
-      btn.addEventListener('click', async (event) => {
-         // По умолчанию браузер перезагружает страницу после отправки формы. 
-         // Эта строка отменяет стандартное поведение, чтобы наше Bluetooth-соединение не разорвалось.
-          event.preventDefault();
-         // Берем актуальное значение из объекта по ID кнопки
-         const currentVal = terminalData[id]; 
-         console.log(currentVal);
-         // Вызываем нашу общую функцию
-         await sendCommand(currentVal);
-      });
-  }
-});
+
 
 //входящее сообщение
 
@@ -132,8 +99,8 @@ const logToTerminal = (message, type = '') => {
   }
 };
 
-// Create a BluetoothTerminal instance with the default configuration. BluetoothTerminal
-// Создаем экземпляр BluetoothTerminal с конфигурацией по умолчанию. BluetoothTerminal
+
+// Создаем обьект terminal используя конструктор BluetoothTerminal с конфигурацией по умолчанию. BluetoothTerminal
 const terminal = new BluetoothTerminal({
   // serviceUuid: 0xFFE0,
   // characteristicUuid: 0xFFE1,
@@ -149,14 +116,14 @@ const terminal = new BluetoothTerminal({
 terminal.onReceive((message) => {
   logToTerminal(message, 'incoming');
 
-// для примера 
+// для примера вывод данных что пришли
 document.querySelector('#in-txt-1').innerHTML=message; //вывод в текстовое поле #in-txt
 document.querySelector('#in-txt-2').innerHTML=message; //вывод в текстовое поле #in-txt
 //Метод split() разбивает строку на массив подстрок, используя указанный разделитель. {28.7?3.30?3.07}
 //данные ложим в массив inDat по порядку их прихода 0 1 2 3 итд
 let in_Dat =message.split("?"); // используем разделитель ? в inDat будет массив  ["знач1", "знач2", "знач3"]
 console.log(in_Dat);
-//можно принемать в сыром виде байтами как в примере ИИ
+//можно принемать в сыром виде байтами как в примере ИИ доработать
 });
 
 
@@ -175,37 +142,41 @@ terminal.onLog((logLevel, method, message) => {
 // Привязываем обработчики событий к элементам пользовательского интерфейса.
 connectButton.addEventListener('click', async () => {
   try {
-    // Откройте в браузере средство выбора Bluetooth-устройств, чтобы выбрать устройство,
-    // если оно ранее не было выбрано, установите
-    // соединение с выбранным устройством и начните обмен данными.
-    await terminal.connect();
-  } catch (error) {
-    logToTerminal(error, 'error');
-    deviceNameLabel.textContent = defaultDeviceName;
-    // deviceNameLabel.textContent = "MLT BT-05";
-    return;
-  }
+      // Откройте в браузере средство выбора Bluetooth-устройств, чтобы выбрать устройство,
+      // если оно ранее не было выбрано, установите
+      // соединение с выбранным устройством и начните обмен данными.
+      await terminal.connect();
+      } catch (error) {
+        //если ошибка подключения
+        logToTerminal(error, 'error');
+        deviceNameLabel.textContent = defaultDeviceName;
+        // deviceNameLabel.textContent = "MLT BT-05";
+        return;
+        }
+
    // Получить имя подключенного в данный момент устройства. или по умолчанию
-  deviceNameLabel.textContent = terminal.getDeviceName() || defaultDeviceName;
+   // отображает на экране имя устройства
+   deviceNameLabel.textContent = terminal.getDeviceName() || defaultDeviceName;
 });
 
 // Отключение от устройства при нажатии на кнопку Disconnect
 disconnectButton.addEventListener('click', () => {
   try {
-    // Disconnect from the currently connected device and clean up associated resources.
-    // Отключитесь от подключенного устройства и очистите связанные с ним ресурсы.
-    terminal.disconnect();
-  } catch (error) {
-                  logToTerminal(error, 'error');
-
-                  return;
-                  }
-// при отключении пишем имя по умолчанию
+      // Отключитесь от подключенного устройства и очистите связанные с ним ресурсы.
+      terminal.disconnect();
+      } catch (error) {
+                    // если ошибка
+                      logToTerminal(error, 'error');
+                      return;
+                      }
+  // при отключении пишем имя по умолчанию
+  // отключение успешно
   deviceNameLabel.textContent = defaultDeviceName;
 });
 
- //при нажатии кнопки отправить сообщение те получить событие 
-//  Мы заставляем программу «слушать» момент, когда пользователь нажмет Enter или кнопку «Отправить» внутри этой формы.
+//при нажатии кнопки отправить сообщение те получить событие 
+//программа «слушает» момент, когда пользователь нажмет Enter 
+//или кнопку «Отправить» внутри этой формы.
 //async (event): Мы помечаем функцию как асинхронную, потому что внутри будем использовать await 
 //(ждем завершения отправки данных по Bluetooth).
 messageForm.addEventListener('submit', async (event) => {
@@ -214,12 +185,13 @@ messageForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   try {
        //Попытка Отправить сообщение на подключенное устройство.
-      //  Вызываем метод send нашего класса BluetoothTerminal.
-      //  Программа буквально ждет здесь, пока все пакеты данных будут переданы устройству.
+       //Вызываем метод send нашего класса BluetoothTerminal.
+       //Программа буквально ждет здесь, пока все пакеты данных будут переданы устройству.
        await terminal.send(messageInput.value); //Берем текст, который пользователь ввел в поле ввода.
   } catch (error) {
-    // Если во время отправки произошла ошибка, мы ловим её, 
-    // выводим сообщение об ошибке на экран через функцию logToTerminal и выходим из функции (return).
+                  // Если во время отправки произошла ошибка, мы ловим её, 
+                  // выводим сообщение об ошибке на экран через функцию logToTerminal 
+                  //и выходим из функции (return).
                   logToTerminal(error, 'error');
                   return;
                   }
@@ -227,8 +199,8 @@ messageForm.addEventListener('submit', async (event) => {
    // помечая его как 'outgoing' (исходящее), чтобы пользователь видел историю переписки.
   logToTerminal(messageInput.value, 'outgoing');
   // Стираем текст из поля ввода, чтобы оно стало пустым для следующего сообщения.
-  // Автоматически возвращаем курсор в поле ввода, чтобы пользователю не нужно было кликать по нему мышкой снова.
   messageInput.value = '';
+  // Автоматически возвращаем курсор в поле ввода, чтобы пользователю не нужно было кликать по нему мышкой снова.
   messageInput.focus();
 });
 
